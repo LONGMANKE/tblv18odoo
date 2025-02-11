@@ -1,0 +1,23 @@
+<odoo>
+    <record id="purchase_order_tree_view_for_purchase_requests_for_quotation_sequence" model="ir.ui.view">
+        <field name="name">purchase.order.tree.for.purchase.requests.for.quotation.sequence</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="requests_for_quotation"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_form_view_for_purchase_requests_for_quotation_sequence" model="ir.ui.view">
+        <field name="name">purchase.order.form.for.purchase.requests.for.quotation.sequence</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fiscal_position_id']" position="before">
+                <field name="requests_for_quotation" invisible="requests_for_quotation == False"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+    <template id="purchase_report_templates_for_purchase_requests_for_quotation" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//div[@id='informations']/div[1]" position="before">
+            <div t-if="o.requests_for_quotation" class="col-auto mw-100 mb-2">
+                <strong>Requests for quotation No:</strong>
+                <p class="m-0" t-field="o.requests_for_quotation"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

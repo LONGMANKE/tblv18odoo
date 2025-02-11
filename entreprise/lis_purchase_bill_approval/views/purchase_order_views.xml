@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_order_inherited_approval" model="ir.ui.view">
+            <field name="name">purchase.order.inherited.approval</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div" position="before">
+                    <widget name="web_ribbon" title="Rejected" bg_color="text-bg-danger"
+                            invisible="state != 'reject'"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button name="button_reject" type="object" invisible="state != 'to approve'" string="Reject"
+                            class="oe_highlight" groups="purchase.group_purchase_manager"/>
+                </xpath>
+                <xpath expr="//button[@name='button_draft']" position="replace">
+                    <field name="show_cancel" invisible="1"/>
+                    <button name="button_draft" invisible="not show_cancel" string="Set to Draft" type="object"
+                            data-hotkey="o"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="reject_type" readonly="1" invisible="1"/>
+                    <field name="show_cancel" readonly="1" invisible="1"/>
+                    <field name="reject_reason" invisible="state != 'reject'" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

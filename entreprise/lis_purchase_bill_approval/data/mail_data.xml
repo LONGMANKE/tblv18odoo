@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bill_approval_template" model="mail.template">
+            <field name="name">Bill Approval Template</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="subject">Approval Needed for Bill {{ object.name }}</field>
+            <field name="description">Sent to users having account admin access</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Hello</p>
+                    <p>A new Bill needs your approval:</p>
+                    <ul>
+                        <li>
+                            <strong>Bill Name:</strong>
+                            <t t-out="object.name or ''"></t>
+                        </li>
+                        <li>
+                            <strong>Created by:</strong>
+                            <t t-out="object.create_uid.name or ''"></t>
+                        </li>
+                        <li>
+                            <strong>Vendor:</strong>
+                            <t t-out="object.partner_id.name or ''"></t>
+
+                        </li>
+                        <li>
+                            <strong>Total Amount:</strong>
+                            <t t-out="object.amount_total or ''"></t>
+
+                        </li>
+                        <li>
+                            <strong>URL:</strong>
+                            <t t-out="object.bill_url or ''"></t>
+                        </li>
+                    </ul>
+                    <p>Please review and approve the Bill.</p>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>
