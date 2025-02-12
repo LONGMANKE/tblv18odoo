@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<odoo>
+	<record model="ir.ui.view" id="account_account_list_inherit_zb_account_approve">
+		<field name="name">account.account.list.inherit.zb.account.approve</field>
+		<field name="model">account.account</field>
+		<field name="inherit_id" ref="account.view_account_list" />
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//list" position="inside">
+					<button name="action_approve" type="object" string="Approve" class="float-end btn-secondary" invisible="approval_status == 'approved'" confirm="Are you sure to Approve?" groups="zb_account_approval.account_approval" readonly='1'/>
+					<button name="action_disapprove" type="object" string="Disapprove" class="float-end btn-secondary" invisible="approval_status == 'to_approve'" confirm="Are you sure to Disapprove?" groups="zb_account_approval.account_approval" readonly='1'/>
+					
+					<field name='approval_status' widget="badge" decoration-danger="approval_status=='to_approve'" decoration-success="approval_status=='approved'" readonly='1'/>
+				</xpath>
+			</data>
+		</field>
+	</record>
+	
+	<record model="ir.ui.view" id="account_account_form_inherit_zb_account_approve">
+		<field name="name">account.account.form.inherit.zb.account.approve</field>
+		<field name="model">account.account</field>
+		<field name="inherit_id" ref="account.view_account_form" />
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//sheet" position="before">
+				<header>
+					<button name="action_approve" type="object" string="Approve" class="float-end btn-secondary" invisible="approval_status == 'approved'" confirm="Are you sure to Approve?" groups="zb_account_approval.account_approval" readonly='1'/>
+					<button name="action_disapprove" type="object" string="Disapprove" class="float-end btn-secondary" invisible="approval_status == 'to_approve'" confirm="Are you sure to Disapprove?" groups="zb_account_approval.account_approval" readonly='1'/>
+					
+					<field name="approval_status" widget="statusbar"  statusbar_visible="to_approve,approved"/>
+					</header>
+				</xpath>
+			</data>
+		</field>
+	</record>
+	
+	<record id="account_account_search_inherit_zb_account_approve" model="ir.ui.view">
+            <field name="name">account.account.search.inherit.zb.account.approve</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_search"/>
+            <field name="priority" eval="10"/>
+            <field name="arch" type="xml">
+		        <filter name="activeacc" position="after">
+		        <separator>
+		           <filter string="Approved Accounts" name="approvedacc" domain="[('approval_status', '=', 'approved')]"/>
+		           <filter string="Accounts To Approve" name="unapprovedacc" domain="[('approval_status', '=', 'to_approve')]"/> 
+		        </separator>
+		        </filter>
+                <field name="name" position="after">
+                	<field name="approval_status"/>
+                </field>
+                <group expand="0" string="Group By">
+                        <filter string="Approval Status" name="approvestatus" domain="" context="{'group_by':'approval_status'}"/>
+                    </group>
+            </field>
+        </record>
+	
+	<record id="account_account_kanban_inherit_zb_account_approve" model="ir.ui.view">
+            <field name="name">account.account.kanban.inherit.zb.account.approve</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_account_kanban"/>
+            <field name="priority" eval="10"/>
+            <field name="arch" type="xml">
+                <field name="account_type" position="after">
+		            <div class="oe_kanban_global_click">
+		                <span class="badge rounded-pill o_badge_approval_status">
+		                    <field name="approval_status" widget="statusbar"/>
+		                </span>
+		            </div>
+		        </field>
+                <xpath expr="//div[@class='row']" position="after">
+                <div class="row">
+                    <div class="col-8">
+                        <strong>Approval Status: </strong><t t-out="record.approval_status.value"/>
+                    </div>
+                </div>
+            </xpath>
+            </field>
+        </record>
+        
+	<record id="action_accounts_disapprove_all" model="ir.actions.server">
+			<field name="name">Disapprove</field>
+			<field name="type">ir.actions.server</field>
+			<field name="model_id" ref="model_account_account"/>
+			<field name="binding_model_id" ref="model_account_account" />
+			<field name="state">code</field>
+			<field name="code">records.action_disapprove()</field>
+			<field name="binding_view_types">list</field>
+			<field name="groups_id" eval="[(4, ref('zb_account_approval.account_approval'))]"/>
+		</record>
+		
+		<record id="action_accounts_approve_all" model="ir.actions.server">
+			<field name="name">Approve</field>
+			<field name="type">ir.actions.server</field>
+			<field name="model_id" ref="model_account_account"/>
+			<field name="binding_model_id" ref="model_account_account"/>
+			<field name="state">code</field>
+			<field name="code">records.action_approve()</field>
+			<field name="binding_view_types">list</field>
+			<field name="groups_id" eval="[(4, ref('zb_account_approval.account_approval'))]"/>
+		</record>
+
+
+</odoo>
